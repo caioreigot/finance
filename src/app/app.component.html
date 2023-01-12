@@ -1,0 +1,58 @@
+<mat-drawer-container hasBackdrop="true">
+<mat-drawer #drawer mode="over">
+    <div class="close-menu-button-container">
+      <button class="close-menu-button" color="accent"
+        mat-icon-button (click)="drawer.close()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="buttons">
+      <a mat-raised-button routerLink="/" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        color="primary" (click)="drawer.close()">
+        <mat-icon>app_registration</mat-icon>
+        Tabela
+      </a>
+      <a mat-raised-button routerLink="statement" routerLinkActive="active"
+        color="primary" (click)="drawer.close()">
+        <mat-icon>history_edu</mat-icon>
+        Extrato
+      </a>
+      <a mat-raised-button routerLink="planning" routerLinkActive="active"
+        color="primary" (click)="drawer.close()">
+        <mat-icon>checklist</mat-icon>
+        Planejamento
+      </a>
+      <div class="nav-bottom-container">
+        <a class="see-project" title="Veja o projeto no GitHub"
+          href="https://github.com/caioreigot/finance" target="_blank"
+        >
+          Finance
+          <img class="github-icon" src="/assets/github.svg" alt="Icone do GitHub"/>
+        </a>
+        <button (click)="downloadAppStructure()" title="Exportar dados"
+          mat-mini-fab color="primary">
+          <mat-icon>download</mat-icon>
+          <a #downloadAnchor></a>
+        </button>
+        <button (click)="requestUploadFile()" title="Importar dados"
+          mat-mini-fab color="primary">
+          <mat-icon>upload</mat-icon>
+        </button>
+        <input hidden (change)="onChooseFile($event)" #fileInput type="file" accept=".json" />
+      </div>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    <header>
+      <button title="Abrir menu" class="open-menu-button" mat-mini-fab
+        color="primary" (click)="drawer.open()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="header-title">
+        {{ title }}
+      </span>
+    </header>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

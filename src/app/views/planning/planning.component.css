@@ -1,0 +1,226 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  width: 100%;
+  height: 100%;
+
+  overflow: auto;
+}
+
+.cut { text-decoration: line-through; }
+
+.container {  
+  width: 100%;
+  min-width: 600px;
+  max-width: 900px;
+  height: 100%;
+  
+  padding: 10px;
+  margin: auto;
+}
+
+/*** Input Container ***/
+
+.input-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 55px;
+  gap: 5px;
+}
+
+.input-container input {
+  outline: 0;
+  border: 0;
+  border-radius: 5px;
+  padding: 15px;
+
+  height: 100%;
+  
+  color: #fff;
+  background-color: #4a4a4a;
+  
+  font-size: 22px;
+}
+
+.input-container input:focus {
+  outline: 1px solid #fff;
+}
+
+.input-container input:hover {
+  filter: brightness(105%);
+}
+
+.input-container .name {
+  width: 60%;
+}
+
+.input-container .price {
+  width: 25%;
+}
+
+.input-container button {
+  background-color: var(--pink);
+  font-size: 16px;
+  color: #fff;
+  
+  width: 15%;
+  height: 100%;
+
+  border: 0;
+  border-radius: 4px;
+}
+
+/*** CHECKLIST ***/
+
+.checklist-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.checklist-container .item-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-height: 60px;
+  
+  border: 2px solid #4a4a4a;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.checklist-container .item-row mat-checkbox {
+  width: 90%;
+  margin-right: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.checklist-container .item-row .item-label {
+  font-size: 16px;
+}
+
+.checklist-container .button-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 10%;
+}
+
+.checklist-container .button-container .delete {
+  margin-left: 5px;
+}
+
+/*** Modal ***/
+
+.informations-dialog {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  width: 90%;
+  min-width: 420px;
+  max-width: 700px;
+
+  height: 90%;
+  max-height: 500px;
+  
+  border: 1px solid var(--pink);
+  border-radius: 4px;
+  background-color: rgb(35, 35, 35);
+}
+
+.mat-tab-content {
+  height: 100%;
+  flex-grow: 1;
+}
+
+.mat-tab-content > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  transform: translateY(-5%);
+}
+
+.modal .close-modal {
+  position: absolute;
+  transform: scale(90%);
+  z-index: 1;
+  right: 8px;
+  top: 8px;
+}
+
+.modal span {
+  color: var(--pink);
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1.5px;
+}
+
+.modal .label {
+  width: 100%;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.modal .value {
+  text-align: center;
+  font-size: 64px;
+  color: var(--white-pink);
+}
+
+.third-container-label-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.third-container-input {
+  width: 70px;
+  outline: 0;
+  border: 0;
+  
+  background-color: var(--white-pink);
+  color: var(--pink);
+  
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  
+  margin: 0 10px 0 5px;
+  padding: 2px 2px;
+}
+
+.third-container-input::placeholder {
+  color: var(--white-pink);
+}
+
+.third-container-input:focus {
+  outline: 1px solid var(--pink);
+}
+
+@media screen and (max-width: 600px) {
+  .modal .close-modal {
+    top: 50px;
+    transform: scale(80%);
+  }
+
+  .modal .value {
+    font-size: 48px;
+  }
+
+  .third-container-label-container span,
+  .third-container-label-container input {
+    font-size: 11px !important;
+  }
+}

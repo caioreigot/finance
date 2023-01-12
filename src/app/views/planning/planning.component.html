@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="input-container">
+    <input [(ngModel)]="formInputs.label" class="name" type="text" placeholder="Nome" spellcheck="false">
+    <input [(ngModel)]="formInputs.price" class="price" type="text" placeholder="Preço" spellcheck="false">
+    <button (click)="addItem()" mat-raised-button color="primary">
+      Adicionar
+    </button>
+  </div>
+  
+  <div class="checklist-container">
+    <div *ngIf="rows.length == 0" class="item-row"></div>
+    <div *ngFor="let row of rows" class="item-row">
+      <mat-checkbox #checkbox (change)="onCheckboxChange(row.id, $event.checked)"
+        checked="{{ row.isChecked }}" color="primary">
+        <span [title]="row.label" class="item-label" [ngClass]="{ 'cut': checkbox.checked }">
+          {{ row.label }}
+        </span>
+      </mat-checkbox>
+      <div class="button-container">
+        <button (click)="openInformationsDialog(row)" title="Informações"
+          mat-mini-fab color="primary">
+          <mat-icon>analytics</mat-icon>
+        </button>
+        <button (click)="deleteRow(row.id)" class="delete"
+          title="Deletar item" mat-mini-fab color="primary">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Informações -->
+<div class="modal" *ngIf="itemBeingViewed">
+  <div class="informations-dialog mat-elevation-z4">
+    <mat-tab-group (selectedTabChange)="onTabChanged($event)"
+      fitInkBarToContent mat-stretch-tabs="false" mat-align-tabs="center">
+      <mat-tab label="Quanto custa"></mat-tab>
+      <mat-tab [label]="haveEnoughBalance ? 'Quanto sobra' : 'Quanto falta'"></mat-tab>
+      <mat-tab label="Quanto tempo falta"></mat-tab>
+    </mat-tab-group>
+    
+    <button (click)="clearInformations()" class="close-modal"
+      mat-mini-fab color="primary">
+      <mat-icon>close</mat-icon>
+    </button>
+    
+    <div class="mat-tab-content">
+      <div #firstContainer>
+        <span class="label">
+          PREÇO DO ITEM
+        </span>
+        <span class="value">
+          {{ itemBeingViewed.price | currency: 'BRL' }}
+        </span>
+      </div>
+      <div #secondContainer>
+        <span class="label">
+          QUANTO {{ haveEnoughBalance ? 'SOBRA' : 'FALTA' }}
+        </span>
+        <span class="value">
+          {{ valueDifference | currency: 'BRL' }}
+        </span>
+      </div>
+      <div #thirdContainer>
+        <div class="third-container-label-container">
+          <span>JUNTANDO R$</span>
+          <input (keyup)="onThirdContainerInputChange($event)"
+            class="third-container-input" placeholder="0,00" type="text">
+          <span>POR MÊS, VOCÊ CONSEGUIRÁ EM</span>
+        </div>
+        <span class="value">
+          {{ timeToBuyInMonths == 0 ? '?' : timeToBuyInMonths }}
+          {{ timeToBuyInMonths > 1 ? 'MESES' : 'MÊS' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

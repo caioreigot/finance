@@ -1,0 +1,37 @@
+<table>
+  <tr>
+    <th>MÊS/ANO</th>
+    <th>SALDO</th>
+  </tr>
+  <!-- Mostra uma linha vazia caso não tenha dados (apenas estético) -->
+  <tr *ngIf="rows.length == 0">
+    <td></td>
+    <td></td>
+  </tr>
+  <tr *ngFor="let row of rows">
+    <td>
+      {{ row.date }}
+    </td>
+    <td
+      [ngClass]="{
+        'positive': row.balance > 0,
+        'negative': row.balance < 0
+      }"
+    >
+      {{ row.balance | currency: 'BRL' }}
+    </td>
+  </tr>
+  <tr class="total-row">
+    <td>
+      <strong>TOTAL:</strong>
+      <span
+        [ngClass]="{
+          'negative': total < 0,
+          'positive': total > 0
+        }"
+      >
+        {{ total | currency: 'BRL' }}
+      </span>
+    </td>
+  </tr>
+</table>

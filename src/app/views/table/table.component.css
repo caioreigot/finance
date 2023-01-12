@@ -1,0 +1,206 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  max-width: 1800px;
+  height: 100%;
+  overflow: auto;
+  
+  margin: auto;
+  padding: 10px;
+}
+
+@media screen and (max-width: 1000px) {
+  :host {
+    justify-content: flex-start;
+    margin: 0;
+  }
+}
+
+.positive { color: #2fff2f; }
+.negative { color: #ff6868; }
+
+/*** TABLE ***/
+
+table, tr, td { all: unset; }
+
+table {
+  display: flex;
+  flex-direction: column;
+
+  width: 70%;
+  min-width: 600px;
+  height: 100%;
+
+  overflow-y: auto;
+  padding-right: 3px;
+}
+
+tr {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+/* Ao passar o mouse por cima da linha da tabela, os botões aparecem */
+tr:hover > .row-buttons-container {
+  display: flex;
+}
+
+td, th {
+  box-sizing: content-box;
+  text-align: center;
+  padding: 6px;
+}
+
+th {
+  background-color: var(--pink);
+  font-size: 15px;
+  text-transform: uppercase;
+  border: 1px solid var(--white-pink);
+}
+
+.row-buttons-container {
+  position: absolute;
+  flex-direction: row;
+  display: none;
+  height: 100%;
+
+  background-color: rgb(0, 0, 0, 0.3);
+  border-radius: 20px;
+}
+
+.row-button {
+  margin-top: 3px;
+  transform: scale(65%);
+  transform-origin: top;
+}
+
+.row-button mat-icon {
+  transform: scale(120%);
+}
+
+td {
+  font-size: 15px;
+  height: 20px;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  border-left: 1px solid var(--white-pink);
+  border-bottom: 1px solid var(--white-pink);
+  border-right: 1px solid var(--white-pink);
+}
+
+td:hover {
+  background-color: #ffffff0a;
+}
+
+tr > td:nth-of-type(1),
+tr > th:nth-of-type(1) {
+  width: 70%;
+}
+
+tr > td:nth-of-type(2),
+tr > th:nth-of-type(2) {
+  width: 30%;
+}
+
+th:nth-of-type(1) { border-top-left-radius: 5px; }
+th:nth-of-type(2) { border-top-right-radius: 5px; }
+tr:last-of-type > td:nth-last-of-type(2) { border-bottom-left-radius: 5px; }
+tr:last-of-type > td:last-of-type { border-bottom-right-radius: 5px; }
+
+/*** ASIDE ***/
+
+aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  width: 30%;
+  min-width: 300px;
+  height: 100%;
+
+  overflow-y: auto;
+
+  border-left: 1px solid var(--white-pink);
+  padding-left: 10px;
+  margin-left: 10px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.descriptive,
+.value {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+mat-hint {
+  font-size: 11px;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.form-submit-button {
+  width: 100%;
+  padding: 25px 0;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+/*** CARDS ***/
+
+.total-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.month-total-card,
+.total-card {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.month-total-card:hover,
+.total-card:hover {
+  filter: brightness(110%);
+}
+
+.card-title {
+  text-transform: uppercase;
+}
+
+.card-content {
+  font-size: 15px;
+}
+
+/*** EDIT ROW MODAL ***/
+
+.edit-row-dialog {
+  background-color: #1c1c1c;
+  border: 1px solid var(--pink);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  padding: 10px;
+}
+
+.edit-row-dialog-buttons {
+  display: flex;
+  flex-direction: row;
+  align-self: flex-end;
+  gap: 4px;
+}

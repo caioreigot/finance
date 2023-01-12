@@ -1,0 +1,115 @@
+mat-drawer-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons > a[routerLink] {
+  padding: 40px 50px;
+  margin-bottom: 8px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.buttons > a[routerLink] > mat-icon {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  transform: scale(110%);
+}
+
+.close-menu-button-container {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.close-menu-button {
+  margin: 5px;
+}
+
+.open-menu-button {
+  margin: 10px 5px 10px 15px;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border-bottom: 1px solid var(--white-pink);
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  margin-left: 10px;
+  
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--white-pink);
+}
+
+.active {
+  filter: brightness(120%);
+  box-shadow: -2px 2px 3px 0px rgba(0, 0, 0, 0.2);
+}
+
+mat-drawer-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+}
+
+/*** SEE PROJECT ***/
+
+.nav-bottom-container {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+}
+
+.see-project {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+
+  text-decoration: none;
+  color: #fff;
+
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.see-project:hover {
+  background-color: #ffffff1a;
+}
+
+@media screen and (max-height: 380px) {
+  .nav-bottom-container {
+    margin: 8px;
+    justify-content: flex-end;
+    position: static;
+  }
+
+  .see-project {
+    display: none;
+  }
+}
+
+.github-icon {
+  filter: invert(1);
+  height: 30px;
+}
