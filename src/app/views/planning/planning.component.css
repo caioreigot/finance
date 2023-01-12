@@ -190,8 +190,8 @@
   outline: 0;
   border: 0;
   
-  background-color: var(--white-pink);
-  color: var(--pink);
+  background-color: #4a4a4a;
+  color: var(--white-pink);
   
   text-align: center;
   font-weight: bold;
@@ -202,7 +202,7 @@
 }
 
 .third-container-input::placeholder {
-  color: var(--white-pink);
+  color: var(--white-pink-transparent);
 }
 
 .third-container-input:focus {

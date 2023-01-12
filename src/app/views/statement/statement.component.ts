@@ -1,7 +1,6 @@
-import { StatementRowData } from './../../model/statement.model';
 import { HeaderService } from './../../services/header.service';
-import { StatementService } from '../../services/statement.service';
-import { Component, OnInit } from '@angular/core';
+import { BalanceService } from '../../services/balance.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-statement',
@@ -10,13 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StatementComponent {
 
-  rows = this.statementService.rows.value;
-  total = this.statementService.totalBalance;
-  
   constructor(
-    private statementService: StatementService,
+    private balanceService: BalanceService,
     private headerService: HeaderService
   ) {
     this.headerService.title = 'Extrato';
+  }
+  
+  get rows() {
+    return this.balanceService.statementRows.value;
+  }
+
+  get total() {
+    return this.balanceService.statementBalance;
   }
 }

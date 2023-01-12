@@ -1,27 +1,29 @@
+import { BalanceService } from './../../services/balance.service';
 import { HeaderService } from './../../services/header.service';
-import { StatementService } from './../../services/statement.service';
 import { MONTHS } from '../../model/months.model';
 import { SnackbarService } from './../../services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormInputs, TableRowData } from '../../model/table.model';
-import { BehaviorSubject } from 'rxjs';
-import { PatchType } from '../../model/patch-type.model';
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
-export class TableComponent implements OnInit {
+export class TableComponent {
 
   constructor(
     private snackbarService: SnackbarService,
     private storageService: StorageService,
-    private statementService: StatementService,
+    private balanceService: BalanceService,
     private headerService: HeaderService
   ) {
     this.headerService.title = 'Tabela';
+
+    if (this.didMonthTurn()) {
+      this.balanceService.clearTableAndSaveBalanceOnStatement();
+    }
   }
 
   formInputs: FormInputs = {
@@ -34,69 +36,30 @@ export class TableComponent implements OnInit {
     descriptive: '',
     value: 0
   }
-
-  rows: BehaviorSubject<TableRowData[]> = new BehaviorSubject(
-    this.storageService.getTableRows() ?? []
-  );
   
   @ViewChild('editRowModal')
   editRowModal: ElementRef | null = null;
   
   currentMonth = MONTHS[new Date().getMonth()];
-  monthBalance = 0;
-  totalBalance = 0;
 
-  ngOnInit(): void {
-    this.rows.subscribe(rows => {
-      const monthBalance = rows.reduce((prev, current) =>
-        current.value + prev, 0
-      );
-      
-      // Quando uma nova linha for adicionada à tabela, atualiza o saldo do mês
-      this.monthBalance = monthBalance;
+  get rows() {
+    return this.balanceService.tableRows.value;
+  }
 
-      // Quando uma nova linha for adicionada à tabela, atualiza o saldo total
-      this.totalBalance = monthBalance + this.statementService.totalBalance;
-    });
+  get monthBalance() {
+    return this.balanceService.monthBalance;
+  }
 
-    // Sempre que o extrato for atualizado, atualiza o balanço total também
-    this.statementService.rows.subscribe(() => {
-      this.totalBalance = this.monthBalance + this.statementService.totalBalance;;
-    });
-
-    if (this.didMonthTurn()) {
-      this.clearTableAndSaveBalanceOnStatement();
-    }
+  get totalBalance() {
+    return this.balanceService.statementBalance + this.monthBalance;
   }
 
   didMonthTurn(): boolean {
-    const tableRows = this.storageService.getTableRows();
-    if (!tableRows || !tableRows[0]) return false;
-
-    const firstRowDateId = Number(tableRows[0].id);
-    const firstRowMonth = new Date(firstRowDateId).getMonth();
-    const currentMonth = new Date().getMonth();
-    return firstRowMonth !== currentMonth;
-  }
-
-  clearTableAndSaveBalanceOnStatement() {
-    const date = new Date();
-    const currentMonth = date.getMonth() + 1;
-    const currentMonthFormatted = currentMonth.toString().padStart(2, '0');
-    const currentMonthYear = `${currentMonthFormatted}/${date.getFullYear()}`;
-    const monthBalance = this.monthBalance;
-    this.rows.next([]);
-    this.storageService.patch(PatchType.TABLE, []);
-    this.statementService.addRow({ 
-      date: currentMonthYear,
-      balance: monthBalance
-    });
+    return this.balanceService.didMonthTurn();
   }
 
   deleteRow(id: string) {
-    const tableRows = this.storageService.deleteTableRow(id);
-    if (!tableRows) return;
-    this.rows.next(tableRows);
+    this.balanceService.deleteTableRow(id);
   }
 
   onSubmit() {
@@ -116,16 +79,12 @@ export class TableComponent implements OnInit {
       return;
     }
 
-    const rows = this.rows.value;
-    
-    rows.push({
+    this.balanceService.addTableRow({
       id: new Date().valueOf().toString(),
       descriptive: this.formInputs.descriptive,
       value: formattedValue
     });
 
-    this.rows.next(rows);
-    this.storageService.patch(PatchType.TABLE, this.rows.value);
     this.snackbarService.showMessage('Linha inserida com sucesso!');
     this.clearForm();
     
@@ -144,7 +103,7 @@ export class TableComponent implements OnInit {
     const rowToEdit = this.storageService.getTableRowById(id);
     
     if (!rowToEdit) {
-      this.snackbarService.showMessage('Erro ao tentar editar linha...', true);
+      this.snackbarService.showMessage('Erro ao tentar encontrar linha...', true);
       return;
     }
 
@@ -156,16 +115,7 @@ export class TableComponent implements OnInit {
   }
 
   saveEditedRow() {
-    if (this.storageService.overrideTableRow(this.rowDataEditDialog)) {
-      const tableRows = this.storageService.getTableRows();
-      if (!tableRows) {
-        this.snackbarService.showMessage('Ocorreu um erro inesperado!'), true;
-        return;
-      }
-      
-      this.rows.next(tableRows);
-      this.snackbarService.showMessage('Linha editada com sucesso!');
-      this.closeEditModal();
-    }
+    this.balanceService.ovewrrideTableRow(this.rowDataEditDialog);
+    this.closeEditModal();
   }
 }

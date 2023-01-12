@@ -5,11 +5,11 @@
     <th>Valor</th>
   </tr>
   <!-- Mostra uma linha vazia caso não tenha dados (apenas estético) -->
-  <tr *ngIf="rows.value.length == 0">
+  <tr *ngIf="rows.length == 0">
     <td></td>
     <td></td>
   </tr>
-  <tr *ngFor="let row of rows.value">
+  <tr *ngFor="let row of rows">
     <div class="row-buttons-container">
       <button (click)="deleteRow(row.id)" class="row-button delete-row"
         title="Deletar linha" mat-mini-fab color="warn">

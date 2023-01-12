@@ -5,6 +5,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 :root {
   --pink: #c2185b;
   --white-pink: #fff0f5;
+  --white-pink-transparent: #fff0f550;
 }
 
 .hidden {

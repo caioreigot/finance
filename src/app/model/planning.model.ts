@@ -5,7 +5,7 @@ export interface PlanningRowData {
   price: number;
 }
 
-export interface FormInputs {
+export interface PlanningFormInputs {
   label: string | null;
   price: number | null;
 }

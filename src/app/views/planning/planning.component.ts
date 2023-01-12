@@ -1,10 +1,8 @@
-import { StatementService } from './../../services/statement.service';
-import { HeaderService } from './../../services/header.service';
-import { StorageService } from 'src/app/services/storage.service';
-import { SnackbarService } from './../../services/snackbar.service';
-import { FormInputs, PlanningRowData } from './../../model/planning.model';
+import { BalanceService } from '../../services/balance.service';
+import { HeaderService } from '../../services/header.service';
+import { PlanningFormInputs, PlanningRowData } from '../../model/planning.model';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { PatchType } from 'src/app/model/patch-type.model';
+import { PlanningService } from '../../services/planning.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
@@ -15,10 +13,9 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 export class PlanningComponent {
 
   constructor(
-    private snackbarService: SnackbarService,
-    private storageService: StorageService,
+    private planningService: PlanningService,
     private headerService: HeaderService,
-    private statementService: StatementService
+    private balanceService: BalanceService
   ) {
     this.headerService.title = 'Planejamento';
   }
@@ -27,88 +24,63 @@ export class PlanningComponent {
   @ViewChild('secondContainer') secondContainer: ElementRef<HTMLDivElement> | null = null;
   @ViewChild('thirdContainer') thirdContainer: ElementRef<HTMLDivElement> | null = null;
 
-  rows: PlanningRowData[] = this.storageService.getPlanningRows() ?? [];
   haveEnoughBalance: boolean = false;
   valueDifference: number = 0;
   timeToBuyInMonths: number = 0;
-  formInputs: FormInputs = {
+  formInputs: PlanningFormInputs = {
     label: null,
     price: null
   }
 
   private _itemBeingViewed: PlanningRowData | null = null;
+
+  get rows() {
+    return this.planningService.rows;
+  }
+
+  set rows(rows: PlanningRowData[]) {
+    this.planningService.rows = rows;
+  }
   
   get itemBeingViewed() {
     return this._itemBeingViewed;
+  }
+
+  get totalBalance() {
+    return this.balanceService.monthBalance + this.balanceService.statementBalance;
   }
 
   set itemBeingViewed(item: PlanningRowData | null) {
     this._itemBeingViewed = item;
 
     if (item) {
-      const tableRows = this.storageService.getTableRows();
-      if (!tableRows) return;
-      
-      const statementBalance = this.statementService.totalBalance;
-      const monthBalance = tableRows.reduce((prev, current) => current.value + prev, 0);
-      this.haveEnoughBalance = statementBalance + monthBalance >= item.price;
-      this.valueDifference = Math.abs(statementBalance + monthBalance - item.price);
+      this.haveEnoughBalance = this.totalBalance >= item.price;
+      this.valueDifference = Math.abs(this.totalBalance - item.price);
     }
   }
 
   onCheckboxChange(id: string, checkStatus: boolean) {
-    const findedRow = this.rows.find(row => row.id === id);
-    if (!findedRow) return;
-
-    const rowIndex = this.rows.indexOf(findedRow);
-    const newRowData = { ...this.rows[rowIndex], isChecked: checkStatus };
-    this.rows[rowIndex] = newRowData;
-
-    this.storageService.patch(PatchType.PLANNING, this.rows);
+    this.planningService.onCheckboxChange(id, checkStatus);
   }
 
   onThirdContainerInputChange(event: any) {
     const inputValue = Number(event.target.value.replaceAll(',', '.'));
     if (!inputValue || !this.itemBeingViewed) return;
+
+    const timeToBuyInMonths = Math.ceil(
+      (this.itemBeingViewed.price - this.totalBalance) / inputValue);
     
-    const timeToBuyInMonths = Math.ceil(this.itemBeingViewed.price / inputValue);
     if (!isFinite(timeToBuyInMonths)) return;
     this.timeToBuyInMonths = timeToBuyInMonths;
   }
 
-  addItem() {
-    if (!this.formInputs.label || !this.formInputs.price) {
-      this.snackbarService.showMessage('Preencha todos os campos!', true)
-      return;
-    }
-    
-    const formattedValue = Number(
-      this.formInputs.price
-        .toString()
-        .replaceAll(',', '.')
-    );
-
-    if (!formattedValue) {
-      this.snackbarService.showMessage('O valor inserido não é válido!', true);
-      return;
-    }
-
-    const planningRow: PlanningRowData = {
-      id: new Date().valueOf().toString(),
-      isChecked: false,
-      label: this.formInputs.label,
-      price: formattedValue
-    }
-
-    this.rows.push(planningRow);
-    this.storageService.patch(PatchType.PLANNING, this.rows);
+  addRow() {
+    this.planningService.addRow(this.formInputs);
     this.clearForm();
   }
 
   deleteRow(id: string) {
-    const planningRows = this.storageService.deletePlanningRow(id);
-    if (!planningRows) return;
-    this.rows = planningRows;
+    this.planningService.deleteRow(id);
   }
 
   openInformationsDialog(item: PlanningRowData) {
