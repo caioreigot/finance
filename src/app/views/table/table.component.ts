@@ -115,7 +115,7 @@ export class TableComponent {
   }
 
   saveEditedRow() {
-    this.balanceService.ovewrrideTableRow(this.rowDataEditDialog);
+    this.balanceService.overrideTableRow(this.rowDataEditDialog);
     this.closeEditModal();
   }
 }

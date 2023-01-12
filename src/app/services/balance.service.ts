@@ -57,7 +57,7 @@ export class BalanceService {
     this.tableRows.next(rows);
   }
 
-  ovewrrideTableRow(newRowData: TableRowData) {
+  overrideTableRow(newRowData: TableRowData) {
     if (this.storageService.overrideTableRow(newRowData)) {
       const tableRows = this.storageService.getTableRows();
       
