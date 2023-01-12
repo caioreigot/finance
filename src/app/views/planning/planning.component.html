@@ -37,7 +37,7 @@
       fitInkBarToContent mat-stretch-tabs="false" mat-align-tabs="center">
       <mat-tab label="Quanto custa"></mat-tab>
       <mat-tab [label]="haveEnoughBalance ? 'Quanto sobra' : 'Quanto falta'"></mat-tab>
-      <mat-tab label="Quanto tempo falta"></mat-tab>
+      <mat-tab *ngIf="!haveEnoughBalance" label="Quanto tempo falta"></mat-tab>
     </mat-tab-group>
     
     <button (click)="clearInformations()" class="close-modal"
