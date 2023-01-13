@@ -9,15 +9,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('TableComponent', () => {
+describe('TableComponent (Tabela)', () => {
   let component: TableComponent;
   let fixture: ComponentFixture<TableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        TableComponent,
-      ],
+      declarations: [ TableComponent ],
       imports: [
         BrowserAnimationsModule,
         MatSnackBarModule,
@@ -35,7 +33,7 @@ describe('TableComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('deve criar o componente', () => {
     expect(component).toBeTruthy();
   });
 });

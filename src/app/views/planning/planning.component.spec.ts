@@ -1,14 +1,20 @@
+import { FormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PlanningComponent } from './planning.component';
 
-describe('PlanningComponent', () => {
+describe('PlanningComponent (Planejamento)', () => {
   let component: PlanningComponent;
   let fixture: ComponentFixture<PlanningComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlanningComponent ]
+      declarations: [ PlanningComponent ],
+      imports: [
+        MatSnackBarModule,
+        FormsModule
+      ]
     })
     .compileComponents();
 
@@ -17,7 +23,7 @@ describe('PlanningComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('deve criar o componente', () => {
     expect(component).toBeTruthy();
   });
 });
