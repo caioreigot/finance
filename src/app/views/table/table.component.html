@@ -11,7 +11,7 @@
   </tr>
   <tr *ngFor="let row of rows">
     <div class="row-buttons-container">
-      <button (click)="deleteRow(row.id)" class="row-button delete-row"
+      <button (click)="balanceService.deleteTableRow(row.id)" class="row-button delete-row"
         title="Deletar linha" mat-mini-fab color="warn">
         <mat-icon>delete</mat-icon>
       </button>

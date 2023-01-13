@@ -14,14 +14,14 @@ import { FormInputs, TableRowData } from '../../model/table.model';
 export class TableComponent {
 
   constructor(
+    public balanceService: BalanceService,
     private snackbarService: SnackbarService,
     private storageService: StorageService,
-    private balanceService: BalanceService,
     private headerService: HeaderService
   ) {
     this.headerService.title = 'Tabela';
 
-    if (this.didMonthTurn()) {
+    if (this.balanceService.didMonthTurn()) {
       this.balanceService.clearTableAndSaveBalanceOnStatement();
     }
   }
@@ -52,14 +52,6 @@ export class TableComponent {
 
   get totalBalance() {
     return this.balanceService.statementBalance + this.monthBalance;
-  }
-
-  didMonthTurn(): boolean {
-    return this.balanceService.didMonthTurn();
-  }
-
-  deleteRow(id: string) {
-    this.balanceService.deleteTableRow(id);
   }
 
   onSubmit() {

@@ -13,9 +13,9 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 export class PlanningComponent {
 
   constructor(
-    private planningService: PlanningService,
-    private headerService: HeaderService,
-    private balanceService: BalanceService
+    public planningService: PlanningService,
+    private balanceService: BalanceService,
+    private headerService: HeaderService
   ) {
     this.headerService.title = 'Planejamento';
   }
@@ -59,10 +59,6 @@ export class PlanningComponent {
     }
   }
 
-  onCheckboxChange(id: string, checkStatus: boolean) {
-    this.planningService.onCheckboxChange(id, checkStatus);
-  }
-
   onThirdContainerInputChange(event: any) {
     const inputValue = Number(event.target.value.replaceAll(',', '.'));
     if (!inputValue || !this.itemBeingViewed) return;
@@ -79,14 +75,13 @@ export class PlanningComponent {
     this.clearForm();
   }
 
-  deleteRow(id: string) {
-    this.planningService.deleteRow(id);
-  }
-
   openInformationsDialog(item: PlanningRowData) {
+    /* O dialog das informações abre quando itemBeingViewed é diferente de null
+    (o que indica que há um item sendo visualizado) */
     this.itemBeingViewed = item;
   }
 
+  // Ao trocar as abas no Informations Dialog, troca o conteúdo para o corresponde
   onTabChanged(tabChangeEvent: MatTabChangeEvent) {
     const views = [this.firstContainer, this.secondContainer, this.thirdContainer];
     const tabIndex = tabChangeEvent.index;

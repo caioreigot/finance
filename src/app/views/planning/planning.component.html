@@ -10,9 +10,13 @@
   <div class="checklist-container">
     <div *ngIf="rows.length == 0" class="item-row"></div>
     <div *ngFor="let row of rows" class="item-row">
-      <mat-checkbox #checkbox (change)="onCheckboxChange(row.id, $event.checked)"
-        checked="{{ row.isChecked }}" color="primary">
-        <span [title]="row.label" class="item-label" [ngClass]="{ 'cut': checkbox.checked }">
+      <mat-checkbox #checkbox
+        (change)="planningService.onCheckboxChange(row.id, $event.checked)"
+        checked="{{ row.isChecked }}" color="primary"
+      >
+        <span [title]="row.label" class="item-label"
+          [ngClass]="{ 'cut': checkbox.checked }"
+        >
           {{ row.label }}
         </span>
       </mat-checkbox>
@@ -21,7 +25,7 @@
           mat-mini-fab color="primary">
           <mat-icon>analytics</mat-icon>
         </button>
-        <button (click)="deleteRow(row.id)" class="delete"
+        <button (click)="planningService.deleteRow(row.id)" class="delete"
           title="Deletar item" mat-mini-fab color="primary">
           <mat-icon>delete</mat-icon>
         </button>
