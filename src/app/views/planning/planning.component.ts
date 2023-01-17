@@ -70,11 +70,6 @@ export class PlanningComponent {
     this.timeToBuyInMonths = timeToBuyInMonths;
   }
 
-  addRow() {
-    this.planningService.addRow(this.formInputs);
-    this.clearForm();
-  }
-
   openInformationsDialog(item: PlanningRowData) {
     /* O dialog das informações abre quando itemBeingViewed é diferente de null
     (o que indica que há um item sendo visualizado) */

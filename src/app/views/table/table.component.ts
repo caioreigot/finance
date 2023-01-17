@@ -70,7 +70,7 @@ export class TableComponent {
       this.snackbarService.showMessage('O valor inserido não é válido!', true);
       return;
     }
-
+    
     this.balanceService.addTableRow({
       id: new Date().valueOf().toString(),
       descriptive: this.formInputs.descriptive,

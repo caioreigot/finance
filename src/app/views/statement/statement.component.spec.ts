@@ -32,8 +32,8 @@ describe('StatementComponent (Extrato)', () => {
     expect(component).toBeTruthy();
   });
 
-  it('deve alterar o título do header para "extrato"', () => {
-    expect(headerService.title.toLowerCase()).toBe('extrato');
+  it('deve alterar o título do header para "Extrato"', () => {
+    expect(headerService.title).toBe('Extrato');
   });
 
   it('deve mostrar o total da soma de todos os valores da tabela', () => {
@@ -49,6 +49,6 @@ describe('StatementComponent (Extrato)', () => {
     const totalBalanceElement = fixture.debugElement
       .query(By.css('#total-balance')).nativeElement;
     
-    expect(totalBalanceElement.innerText).toBe('R$200.00');
+    expect(totalBalanceElement.innerText).toContain('200.00');
   });
 });

@@ -2,7 +2,7 @@
   <div class="input-container">
     <input [(ngModel)]="formInputs.label" class="name" type="text" placeholder="Nome" spellcheck="false">
     <input [(ngModel)]="formInputs.price" class="price" type="text" placeholder="Preço" spellcheck="false">
-    <button (click)="addRow()" mat-raised-button color="primary">
+    <button id="add-button" (click)="planningService.addRow(formInputs); clearForm()" mat-raised-button color="primary">
       Adicionar
     </button>
   </div>
